@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 const app = express();
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe('sk_test_51QxrOUGmxOvkyo74mqKzwEQPIYEoBklqSTKeVXBQqcgzolyrLu9UnbKlntndd1KkjpCI3pkEzB89mQRDUk3gjxWN009COp8Qel');
 
 app.use(express.json());
 app.use(cors());
