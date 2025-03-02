@@ -11,7 +11,13 @@ app.use(express.json());
 app.use(cors());
 
 app.post("/create-checkout-session", async (req, res) => {
-    const { amount, product } = req.body;
+    try {
+        const { amount, product } = req.body;
+    
+    if (!amount || !product) {
+            return res.status(400).json({ error: "Missing amount or product" });
+    }
+
 
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
@@ -24,11 +30,15 @@ app.post("/create-checkout-session", async (req, res) => {
             quantity: 1,
         }],
         mode: "payment",
-        success_url: "https://your-frontend-site.com/success",
-        cancel_url: "https://your-frontend-site.com/cancel",
+        success_url: "https://bike-shop-backend-2l3f.onrender.com",
+        cancel_url: "https://bike-shop-backend-2l3f.onrender.com",
     });
 
     res.json({ id: session.id });
+    } catch (error) {
+        console.error("Stripe Error:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
 });
 
 app.listen(10000, () => console.log("Server running on port 10000"));
